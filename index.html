@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#e9f3ff" />
+  <title>TripTab · Travel together. Settle simply.</title>
+  <link rel="icon" type="image/svg+xml" href="triptab-logo.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <!-- 01. Branding: the logo is a standalone SVG also used as browser favicon. -->
+    <header class="app-header">
+      <div class="brand"><img src="triptab-logo.svg" class="brand-logo" alt="TripTab logo: two travelers exchanging money" />
+        <div><h1>TripTab</h1><p>Travel together. Settle simply.</p></div>
+      </div>
+      <div class="header-scenery" aria-hidden="true"><span class="cloud">☁</span><span class="plane">✈</span><span class="mountain mountain-back"></span><span class="mountain mountain-front"></span><span class="suitcase">▣</span></div>
+    </header>
+
+    <!-- 02. Three-column workspace: member/group sidebar, bills, editor. -->
+    <section class="workspace">
+      <aside class="sidebar panel" aria-label="Trip settings">
+        <div class="sidebar-block"><div class="section-heading"><h2><span class="section-icon">♧</span> Members</h2><span class="section-tip">Double-click to edit</span></div>
+          <div id="member-list" class="member-list"></div></div>
+        <div class="sidebar-block"><div class="section-heading"><h2><span class="section-icon">♧</span> Groups</h2></div>
+          <nav id="group-list" class="group-list" aria-label="Filter activities by group"></nav></div>
+        <div class="sidebar-block currency-block"><div class="section-heading"><h2><span class="section-icon">⇄</span> Exchange Rate</h2></div>
+          <div class="currency-pair"><div><label for="source-currency">From</label><select id="source-currency" aria-label="Source currency"></select></div><span aria-hidden="true">→</span><div><label for="settlement-currency">To</label><select id="settlement-currency" aria-label="Settlement currency"></select></div></div>
+          <input id="exchange-rate" type="number" min="0" step="any" value="0.045" aria-label="Manual exchange rate" />
+          <p class="hint" id="exchange-hint">1 JPY in CNY</p>
+          <p class="hint">Manual conversion for settlement. Rates are shared across bills.</p>
+        </div>
+      </aside>
+
+      <section class="activities-column panel" aria-label="Activities">
+        <div class="column-heading"><h2>▤ &nbsp; Activities</h2><button id="add-bill" class="primary" type="button">＋ Add</button></div>
+        <div class="activity-toolbar"><label class="search-wrap"><span aria-hidden="true">⌕</span><input id="activity-search" type="search" placeholder="Search activities…" aria-label="Search activities" /></label><small id="activity-count"></small></div>
+        <div id="activity-list" class="scroll-panel" aria-label="Scrollable activity list"></div>
+      </section>
+
+      <section class="editor-column panel" aria-label="Activity editor">
+        <div class="column-heading"><h2>✎ &nbsp; Edit activity</h2><div class="actions"><button id="delete-bill" class="danger" title="Delete activity" type="button">♲ Delete</button><button id="duplicate-bill" title="Duplicate activity" type="button">▢ Duplicate</button></div></div>
+        <div id="activity-editor" class="scroll-panel editor-scroll" aria-label="Scrollable activity editor"></div>
+      </section>
+    </section>
+
+    <!-- 03. Final settlement: balance cards and suggested transfers. -->
+    <section class="settlement panel" aria-label="Final settlement">
+      <button id="settlement-toggle" class="settlement-heading" aria-expanded="true" type="button"><span>⚖ &nbsp; <strong>Final Settlement</strong></span><span id="settlement-count"></span><span id="settlement-chevron">⌄</span></button>
+      <div id="settlement-results"></div>
+    </section>
+
+    <!-- 04. Dialogs retained from v0.3.6; existing JavaScript still controls them. -->
+    <dialog id="member-dialog" class="member-dialog" aria-labelledby="member-dialog-title"><form id="member-form">
+      <h2 id="member-dialog-title">Edit member</h2><p class="hint">Double-click a member bubble to edit its name or color.</p>
+      <div class="field"><label for="member-name-input">Member name</label><input id="member-name-input" type="text" maxlength="40" required autocomplete="off" /><small id="member-name-error" class="member-error" role="alert"></small></div>
+      <div class="field"><label>Member color · 24 choices</label><div id="color-options" class="color-options" role="group" aria-label="Choose a member color"></div></div>
+      <div class="dialog-actions"><button type="button" id="cancel-member" class="secondary">Cancel</button><button type="submit" class="primary">Save changes</button></div>
+    </form></dialog>
+    <dialog id="group-dialog" class="member-dialog" aria-labelledby="group-dialog-title"><form id="group-form">
+      <h2 id="group-dialog-title">Add group</h2><p class="hint">Select an exact member combination. Click a group to filter; double-click to edit.</p>
+      <div class="field"><label for="group-name-input">Group name</label><input id="group-name-input" type="text" maxlength="40" required autocomplete="off" /></div>
+      <div class="field"><label>Group members</label><div id="group-member-options" class="group-member-options"></div><small id="group-error" class="member-error" role="alert"></small></div>
+      <div class="dialog-actions"><button type="button" id="cancel-group" class="secondary">Cancel</button><button type="submit" class="primary">Save group</button></div>
+    </form></dialog>
+    <footer><p id="save-status" role="status">Checking local storage…</p><p>TripTab v0.4.0 · Saved locally in this browser · No account needed</p></footer>
+  </main>
+</body>
+</html>
